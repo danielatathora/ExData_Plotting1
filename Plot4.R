@@ -11,14 +11,14 @@ print("using csv.sql")
 library(sqldf)
 # get two days data , note between does not work as the Date field is a string so uning IN() 
 hhpDataSql <- read.csv.sql(file=household_power_fileName,
-                           sql="select * from file where Date IN('2/1/2007', '2/2/2007')",
+                           sql="select * from file where Date IN('1/2/2007', '2/2/2007')",
                            sep=";",
                            colClasses=rep("character",9))
 
 # summary(hhpDataSql)
 
 # make a dataframe
-hhpData <- data.frame(datetime = paste(as.Date(hhpDataSql$Date, "%m/%d/%Y"), hhpDataSql$Time)
+hhpData <- data.frame(datetime = paste(as.Date(hhpDataSql$Date, "%d/%m/%Y"), hhpDataSql$Time)
                       ,Sub_metering_1 = as.numeric(hhpDataSql$Sub_metering_1)
                       ,Sub_metering_2 = as.numeric(hhpDataSql$Sub_metering_2)
                       ,Sub_metering_3 = as.numeric(hhpDataSql$Sub_metering_3)
@@ -50,7 +50,7 @@ with( hhpData,
             ,xlab = ' '
             ,ylab = 'Energy sub metering'
             ,type = "l"
-            ,ylim=c(0,35)))
+            ))
 
 with(hhpData, lines(x <- datetime, y <- Sub_metering_2, col='red'))
 with(hhpData, lines(x <- datetime, y <- Sub_metering_3, col='blue'))
